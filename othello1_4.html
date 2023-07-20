@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Othello1 test1_4</title>
+    <style>
+        body {
+            background-color: antiquewhite;
+            /* background-image: url(wood.jpg); */
+            background-repeat: repeat
+        }
+
+        h1 {
+            font-size: 40px;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: rgb(215, 195, 168);
+        }
+
+        .container {
+            font-size: 0;
+        }
+
+        #board {
+            height: 495x;
+            width: 495px;
+            display: flex;
+
+            flex-wrap: wrap;
+            margin: 5rem auto;
+            padding: 0;
+            background-color: rgb(17, 129, 17);
+            outline: 1.5rem solid black;
+        }
+
+        #board div {
+            width: 60px;
+            height: 60px;
+            line-height: 2;
+            text-align: center;
+            border: 1px solid black;
+            font-size: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            margin: 0;
+            padding: 0;
+        }
+
+        #controller {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+        }
+
+        input[type="button"] {
+            background-color: rgb(202, 190, 169);
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            border-color: bisque;
+            font-weight: bold;
+            font-size: 16px;
+            color: rgb(113, 106, 105);
+        }
+
+        /* 白い石 */
+        div.white {
+            width: 70%;
+            height: 70%;
+            border-radius: 50%;
+            background-color: white;
+            color: white;
+        }
+
+        /* 黒い石 */
+        div.black {
+            width: 70%;
+            height: 70%;
+            border-radius: 50%;
+            background-color: black;
+        }
+
+        /* すでに石がある場所
+        .cantcelect {
+            background-color: rgb(17, 129, 17);
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Othello_1-4test</h1>
+
+        <div id="board">
+
+        </div>
+        <div id="controller">
+            <input type="button" value="Reset" onclick="koshin()">
+        </div>
+    </div>
+    <p>石は交互ok、gameList読み込みOK</p>
+
+</body>
+<script>
+    'use script'
+
+    //更新ボタン
+    function koshin() {
+        location.reload();
+    }
+    //よく使いそうな処理は関数にする
+    function makeblack(i,item) {
+        item.textContent = '●';
+        item.classList.add('black', 'cantselect');
+        gameList[i] = '●';
+    }
+
+    //--------------------------------------------------
+    //ゲーム結果取得の配列
+    const gameList = Array.from({ length: 64 }, () => "_");
+    //クリック回数
+    let count = 0
+    //ボードの作成
+    const gameboard = document.querySelector('#board');
+    for (let i = 0; i < 64; i++) {
+        const item = document.createElement('div');
+        //勝負前の初期化　中心に置く石４つ
+        if (i === 27 || i === 36) {
+            item.textContent = '0';
+            item.classList.add('white', 'cantselect')
+            gameList[i] = '0';
+        } else if (i === 28 || i === 35) {
+            // 
+            makeblack(i,item)
+            //ここからオセロ開始
+        } else {
+            item.onclick = function () {
+                //白＿先制
+                if (count % 2 === 0) {
+
+                    item.textContent = '0';
+                    item.classList.add('white', 'cantselect');
+                    gameList[i] = '0';
+
+                    //黒＿後制
+                } else {
+                    makeblack(i,item)
+                }
+                console.log(count)
+                count++;
+                console.log(gameList)
+            }
+        }
+        //一打づつ記録＿appendChild()_指定された親ノードの子ノードリストの末尾にノードを追加
+        //これがないと動かないしBoardの表示もできなくなる。※divマスの絡みか？
+        gameboard.appendChild(item);
+        console.log(gameboard)
+    }
+
+
+</script>
+
+</html>
